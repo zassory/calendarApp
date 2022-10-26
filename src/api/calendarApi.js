@@ -1,10 +1,7 @@
 import axios from 'axios';
 import { getEnvVariables } from '../helpers';
 
-const { 
-    VITE_API_URL_DESARROLLO
-    //VITE_API_URL_PRODUCCION
-} = getEnvVariables()
+const { VITE_API_URL_DESARROLLO } = getEnvVariables()
 
 const calendarApi = axios.create({
     baseURL: VITE_API_URL_DESARROLLO
@@ -14,11 +11,9 @@ const calendarApi = axios.create({
 // Todo: configurar interceptores
 //Interceptar lo que viene en la request
 calendarApi.interceptors.request.use(   config  =>  {
-
     
-
     config.headers = {
-        ...config.headers,        
+        ...config.headers,
         'x-token': localStorage.getItem('token')
     }
 
