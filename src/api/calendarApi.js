@@ -4,8 +4,7 @@ import { getEnvVariables } from '../helpers';
 const { VITE_API_URL_DESARROLLO } = getEnvVariables()
 
 const calendarApi = axios.create({
-    baseURL: VITE_API_URL_DESARROLLO
-    //baseURL: VITE_API_URL_PRODUCCION
+    baseURL: VITE_API_URL_DESARROLLO    
 });
 
 // Todo: configurar interceptores

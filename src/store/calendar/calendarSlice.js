@@ -34,7 +34,7 @@ export const calendarSlice = createSlice({
           },
           onUpdateEvent: (state,{ payload }) => {
             state.events = state.events.map(  event => {
-              if( event._id === payload._id ){//Si el event.id de mi state es igual
+              if( event.id === payload.id ){//Si el event.id de mi state es igual
                 //que el que viene en mi payload
                 return payload;//En payload viene todo el evento activo
               }
@@ -45,7 +45,7 @@ export const calendarSlice = createSlice({
           onDeleteEvent: (state) => {
             if( state.activeEvent ){
               state.events = state.events.filter(   
-                event => event._id !== state.activeEvent._id
+                event => event.id !== state.activeEvent.id
               );
               state.activeEvent = null;
             }
@@ -60,8 +60,20 @@ export const calendarSlice = createSlice({
                 state.events.push( event );
               }
             });
+          },
+          onLogoutCalendar: ( state  ) => {
+            state.isLoadingEvents= true;
+            state.events= [ ];
+            state.activeEvent= null;
           }
        }
 });
 // Action creators are generated for each case reducer function
-export const {  onSetActiveEvent  , onAddNewEvent , onUpdateEvent , onDeleteEvent , onLoadEvents } = calendarSlice.actions;
+export const {  
+    onSetActiveEvent  , 
+    onAddNewEvent , 
+    onUpdateEvent , 
+    onDeleteEvent , 
+    onLoadEvents ,
+    onLogoutCalendar ,
+  } = calendarSlice.actions;

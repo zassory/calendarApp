@@ -94,7 +94,6 @@ export const CalendarModal = () => {
 
         //TODO:
         await startSavingEvent(   formValues  );
-        console.log( "El formValues es: !!!!!!!", formValues  );
         closeDateModal();
         setFormSubmitted(false);
         //Cerrar modal

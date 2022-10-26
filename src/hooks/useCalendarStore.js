@@ -15,24 +15,41 @@ export const useCalendarStore = () => {
     }
 
     const startSavingEvent = async( calendarEvent   ) => {
-        
-        // TODO: Update event        
-        if( calendarEvent._id){
-            // Actualizando
-            dispatch(  onUpdateEvent(   {...calendarEvent}   ) );
-        }else{            
-            
-            const { data } = await calendarApi.post('/events',calendarEvent);
-            console.log("La data que viene es:    ", data);
+                
+        try{
+
+            if( calendarEvent.id){
+                // Actualizando
+                await calendarApi.put(`/events/${ calendarEvent.id }`, calendarEvent   )
+                dispatch(  onUpdateEvent(   {...calendarEvent , user }   ) );
+                return;
+            }
+                        
+            // Creando
+            const { data } = await calendarApi.post('/events',calendarEvent);        
             dispatch( onAddNewEvent({ ...calendarEvent, id: data.event.id , user }) );
+
+        }catch( error ){
+            //Recibimos un axios error
+            Swal.fire('Error al guardar', error.response.data.msg,'error');
         }
 
     }
 
-    const startDeletingEvent = () => {
-
+    const startDeletingEvent = async( ) => {
+        
         // Todo: Llegar al backend
-        dispatch(   onDeleteEvent() );
+        //Primero que todo llegar a nuestro backend
+        try{
+            
+            await calendarApi.delete(`/events/${ activeEvent.id }`);
+            dispatch( onDeleteEvent() );
+
+        }catch( error ){
+            //Recibimos un axios error
+            console.log({ error  });
+            Swal.fire('Error al eliminar', error.response.data.msg,'error');
+        }        
     }
 
     const startLoadingEvents = async() => {
@@ -41,7 +58,7 @@ export const useCalendarStore = () => {
             const { data } = await calendarApi.get('/events');
             const events = convertEventsToDateEvents(  data.events );
             dispatch( onLoadEvents(  events  )  );
-            console.log(events);
+            
 
         }catch(error){
             console.log('Error cargando eventos');
